@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Book Car";
+    ViewData["ActivePage"] = "Cars";
+    var car = ViewData["Car"] as CarRental.Models.Car;
+}
+
+@if (car == null)
+{
+    <div class="alert alert-danger">Car not found.</div>
+}
+else
+{
+    <h2>Book @car.Make @car.Model</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">@car.Make @car.Model (@car.Year)</h5>
+            <p class="card-text">@car.Description</p>
+            <div class="price-tag mb-2">@car.PricePerDay.ToString("C") per day</div>
+        </div>
+    </div>
+
+    <div class="booking-form">
+        <form asp-area="" asp-controller="Bookings" asp-action="Create" method="post">
+            <input type="hidden" name="carId" value="@car.Id" />
+            <div class="mb-3">
+                <label class="form-label">Pickup Date</label>
+                <input type="date" name="pickupDate" class="form-control" required min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Return Date</label>
+                <input type="date" name="returnDate" class="form-control" required min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Notes (optional)</label>
+                <textarea name="notes" class="form-control" rows="3" placeholder="E.g. GPS, child seat, delivery..."></textarea>
+            </div>
+            <div id="price-preview" class="alert alert-info mb-3 d-none">
+                Estimated total: <span id="total-price">$0.00</span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100">Submit Booking Request</button>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        const pickup = document.querySelector('input[name="pickupDate"]');
+        const ret = document.querySelector('input[name="returnDate"]');
+        const totalEl = document.getElementById('total-price');
+        const preview = document.getElementById('price-preview');
+        const pricePerDay = @car.PricePerDay;
+
+        function calc() {
+            if (!pickup.value || !ret.value) return;
+            const d1 = new Date(pickup.value);
+            const d2 = new Date(ret.value);
+            const days = Math.max(1, Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24)));
+            totalEl.textContent = (days * pricePerDay).toFixed(2);
+            preview.classList.remove('d-none');
+        }
+        pickup.addEventListener('change', calc);
+        ret.addEventListener('change', calc);
+    </script>
+}

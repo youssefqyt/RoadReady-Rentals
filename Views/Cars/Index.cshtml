@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "All Cars";
+    ViewData["ActivePage"] = "Cars";
+    var cars = Model as IEnumerable<CarRental.Models.Car> ?? Enumerable.Empty<CarRental.Models.Car>();
+}
+
+<h2>All Cars</h2>
+
+<a asp-area="" asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary mb-3">Reset Filters</a>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    @foreach (var car in cars)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-img-wrapper position-relative">
+                    <img src="@car.ImageUrl" alt="@car.Make @car.Model" />
+                    <span class="badge bg-@(car.IsAvailable ? "success" : "secondary") position-absolute top-0 end-0 m-2">
+                        @(car.IsAvailable ? "Available" : "Unavailable")
+                    </span>
+                    <span class="category-badge badge bg-dark text-white position-absolute top-0 start-0 m-2">
+                        @car.Category
+                    </span>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@car.Make @car.Model (@car.Year)</h5>
+                    <p class="card-text flex-grow-1">@car.Description</p>
+                    <div class="d-flex justify-content-between align-items-start mt-auto">
+                        <div>
+                            <div class="price-tag">@car.PricePerDay.ToString("C") / day</div>
+                            <div class="text-muted small">@car.Seats seats · @car.Transmission · @car.FuelType</div>
+                        </div>
+                        <a asp-area="" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

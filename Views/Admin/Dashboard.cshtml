@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["ActivePage"] = "Admin";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card stats-card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Cars</h5>
+                <p class="display-4 mb-0">@ViewData["TotalCars"]</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="display-4 mb-0">@ViewData["TotalUsers"]</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card bg-warning text-dark">
+            <div class="card-body">
+                <h5 class="card-title">Total Bookings</h5>
+                <p class="display-4 mb-0">@ViewData["TotalBookings"]</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Revenue</h5>
+                <p class="display-4 mb-0">@(((decimal)ViewData["Revenue"]).ToString("C"))</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Pending Bookings</h5>
+                <p class="card-text">@ViewData["PendingBookings"] bookings awaiting approval.</p>
+                <a asp-area="" asp-controller="Admin" asp-action="ManageBookings" class="btn btn-outline-primary">Manage</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Manage Cars</h5>
+                <p class="card-text">Add, edit, or remove vehicles in the catalog.</p>
+                <a asp-area="" asp-controller="Admin" asp-action="ManageCars" class="btn btn-outline-primary">Manage</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Manage Users</h5>
+                <p class="card-text">View registered customers and administrators.</p>
+                <a asp-area="" asp-controller="Admin" asp-action="ManageUsers" class="btn btn-outline-primary">Manage</a>
+            </div>
+        </div>
+    </div>
+</div>
